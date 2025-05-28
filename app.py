@@ -1,4 +1,3 @@
-import plotly.express as px
 import nltk
 nltk.download(['punkt', 'punkt_tab', 'averaged_perceptron_tagger', 'vader_lexicon'])
 import streamlit as st

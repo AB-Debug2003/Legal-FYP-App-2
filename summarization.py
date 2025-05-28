@@ -21,7 +21,7 @@ def load_llm():
 llm = load_llm()
 
 def generate_summary(text: str) -> str:
-    """Robust summary generation with error handling"""
+    """Structured legal summary with clean headings and detailed content formatting."""
     if not text:
         return "No content to summarize"
 
@@ -33,14 +33,52 @@ def generate_summary(text: str) -> str:
         )
         docs = text_splitter.create_documents([text])
 
-        map_template = """Summarize this legal document chunk:
-        {docs}
-        CONCISE SUMMARY:"""
+        map_template = """
+                You are a legal analyst. Summarize the legal document chunk using the exact format below.
+
+                ⚠️ STRICT FORMATTING INSTRUCTIONS:
+                - Each heading should be on its own line.
+                - The content (description or list) should be on the next line only.
+                - Do NOT place the content on the same line as the heading.
+                - Use the provided headings only if relevant to the document.
+
+                HEADINGS TO USE (if applicable):
+                Case Background
+                Appellants & Defendants
+                Important Dates
+                Type of Case
+                Legal Issues Raised
+                Jurisdictional Challenge
+                Evidentiary Support
+                Arguments by Petitioners
+                Arguments by Respondents
+                Case Laws Applied
+                Lower Court Findings
+                Court’s Decision
+                Relief Sought
+
+                Text:
+                {docs}
+
+                Structured Summary:
+                """
         map_prompt = PromptTemplate.from_template(map_template)
 
-        reduce_template = """Combine these summaries:
-        {doc_summaries}
-        FINAL SUMMARY:"""
+        reduce_template = """
+You are a legal analyst. Combine and clean up the summaries below into one final summary with this strict format:
+
+⚠️ STRICT FORMAT RULES:
+- Each heading should appear on one line.
+- The detail or list should appear on the line directly after it.
+- Do not merge heading and content into a single line.
+- Repeat this format for each relevant heading.
+- Do not invent or hallucinate sections. Just merge and clean what is already present.
+
+Summaries:
+{doc_summaries}
+
+Final Structured Summary:
+"""
         reduce_prompt = PromptTemplate.from_template(reduce_template)
 
         map_chain = LLMChain(llm=llm, prompt=map_prompt)
