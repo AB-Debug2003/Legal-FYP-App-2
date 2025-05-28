@@ -11,7 +11,7 @@ def load_llm():
     try:
         return ChatGroq(
             model_name="llama3-70b-8192", 
-            api_key=os.getenv("GROQ_API_KEY"),
+            api_key = st.secrets["GROQ_API_KEY"],
             request_timeout=30
         )
     except Exception as e:
