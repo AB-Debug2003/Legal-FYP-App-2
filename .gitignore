@@ -1,0 +1,14 @@
+# Environment and Python junk
+.env
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+
+# Model and output
+fine_tuned_pegasus_model/
+
+# IDE/editor folders
+.vscode/
+*.log
