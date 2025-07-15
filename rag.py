@@ -4,6 +4,8 @@ import numpy as np
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 import streamlit as st
+from pegasus_llm import PegasusLLM
+
 
 from sentence_transformers import SentenceTransformer
 from langchain_groq import ChatGroq
@@ -22,15 +24,10 @@ def load_embedding_model():
 @st.cache_resource
 def load_llm():
     try:
-        return ChatGroq(
-            model_name=LLM_MODEL_NAME, 
-            api_key = st.secrets["GROQ_API_KEY"],
-            request_timeout=30
-        )
+        return PegasusLLM(model_path="./fine_tuned_pegasus_model")
     except Exception as e:
-        st.error(f"Failed to load LLM: {str(e)}")
+        st.error(f"Failed to load Pegasus model: {str(e)}")
         return None
-
 embedding_model = load_embedding_model()
 llm = load_llm()
 
