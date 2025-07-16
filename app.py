@@ -41,7 +41,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 from document_processing import extract_text_from_pdf
 from document_processing import chunk_text, create_faiss_index
 from rag import generate_rag_response
-from summarization import generate_summary
+from summarization import generate_structured_legal_summary
 from utils import initialize_session_state
 
 # Initialize session state
@@ -114,7 +114,7 @@ def main():
                             st.session_state.faiss_index = create_faiss_index(st.session_state.text_chunks)
 
                             st.write("Generating summary...")
-                            st.session_state.summaries['document'] = generate_summary(st.session_state.full_text)
+                            st.session_state.summaries['document'] = generate_structured_legal_summary(st.session_state.full_text)
 
                             status.update(label="Analysis Complete!", state="complete", expanded=False)
                             st.session_state.document_processed = True
